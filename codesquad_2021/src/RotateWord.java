@@ -31,7 +31,7 @@ public class RotateWord {
 			
 			//direction 변수 예외처리
 			if(!(direction == 'r' || direction == 'R' || direction == 'l' || direction == 'L')) {
-				System.out.println("3번째 인자는 L(l) 혹은 R(r) 중에 하나 여야 합니다.");
+				System.out.println("3번째 인자는 L(l) 혹은 R(r) 중에 하나 여야 합니다. 다시 입력해주세요\n");
 				continue;
 			}
 			
@@ -48,6 +48,7 @@ public class RotateWord {
 				index = index * (-1);
 			}
 			
+			// index 정수의 절댓값이 단어의 길이보다 긴 경우 remainder를 이용 
 			int remainder = index % word.length();
 			
 			if (direction == 'R' || direction == 'r') {
@@ -57,7 +58,7 @@ public class RotateWord {
 				answer = leftRotate(word, remainder);
 			}
 			
-			System.out.println(answer);
+			System.out.println(answer + '\n');
 		}
 		
 		
