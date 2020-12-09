@@ -23,35 +23,38 @@ public class Cube {
 		System.out.println("Cube > ");
 		String input = scan.next();
 		String command[];
-		command = input.split("((?!')");
-		
-//		String command[] = "UU'RR'T'TU".split("(?!')");
-//		for(int i =0;i<command.length;i++) {
-//			System.out.println(command[i]);
-//		}
-
+		command = input.split("(?!')");
 		
 		for(int i=0; i<command.length; i++) {
 			//TODO 각 command에 맞는 함수 작성
 			switch(command[i]) {
 			case "U":
 				System.out.println("rotate U");
+				break;
 			case "U\'":
 				System.out.println("rotate U\'");
+				break;
 			case "R":
 				System.out.println("rotate R");
+				break;
 			case "R\'":
 				System.out.println("rotate R\'");
+				break;
 			case "L":
 				System.out.println("rotate L");
+				break;
 			case "L\'":
 				System.out.println("rotate U\'");
+				break;
 			case "B":
 				System.out.println("rotate R");
+				break;
 			case "B\'":
 				System.out.println("rotate R\'");
+				break;
 			case "Q":
 				System.out.println("Bye~");
+				break;
 			}
 		}
 		
