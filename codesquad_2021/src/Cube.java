@@ -46,89 +46,91 @@ public class Cube {
 		char array[][] = {{'R','R','W'},{'G','C','W'},{'G','B','B'}};
 		printCube(array);
 		
+		System.out.println(array[2]);
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Cube > ");
-		String input = scan.next().toUpperCase();	//모든 입력값을 대문자로 바꾼다.
-		String command[];
-		command = input.split("(?!')");	//UU'B 가 입력인 경우 U,U',B로 split 해줌
 		
-		for(int i=0; i<command.length; i++) {
-			switch(command[i]) {
-			case "U":	//가장 윗줄 왼쪽 한 칸 밀기
-				System.out.println("rotate U");
-				char U_rotate[] = leftRotate(array[0], 1);
-				array[0][0] = U_rotate[0];
-				array[0][1] = U_rotate[1];
-				array[0][2] = U_rotate[2];
-				printCube(array);
-				break;
-			case "U\'":	//가장 윗줄 오른쪽 한 칸 밀기
-				System.out.println("rotate U\'");
-				char UU_rotate[] = rightRotate(array[0], 1);
-				array[0][0] = UU_rotate[0];
-				array[0][1] = UU_rotate[1];
-				array[0][2] = UU_rotate[2];
-				printCube(array);
-				break;
-			case "R":	//가장 오른쪽 줄 위로 한 칸 밀기 = 왼쪽 한 칸
-				System.out.println("rotate R");
-				char R_rotate[] = leftRotate(getColumn(array,2),1);
-				array[0][2] = R_rotate[0];
-				array[1][2] = R_rotate[1];
-				array[2][2] = R_rotate[2];
-				printCube(array);
-				break;
-			case "R\'":	//가장 오른쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
-				System.out.println("rotate R\'");
-				char RR_rotate [] = rightRotate(getColumn(array,2),1);
-				array[0][2] = RR_rotate[0];
-				array[1][2] = RR_rotate[1];
-				array[2][2] = RR_rotate[2];
-				printCube(array);
-				break;
-			case "L":	//가장 왼쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
-				System.out.println("rotate L");
-				char L_rotate [] = rightRotate(getColumn(array,0),1);
-				array[0][0] = L_rotate[0];
-				array[1][0] = L_rotate[1];
-				array[2][0] = L_rotate[2];
-				printCube(array);
-				break;
-			case "L\'":	//가장 왼족 줄 위로 한 칸 밀기 = 왼쪽 한 칸 
-				System.out.println("rotate U\'");
-				char LL_rotate [] = leftRotate(getColumn(array,0),1);
-				array[0][0] = LL_rotate[0];
-				array[1][0] = LL_rotate[1];
-				array[2][0] = LL_rotate[2];
-				printCube(array);
-				break;
-			case "B":	//가장 아랫줄 오른쪽 한 칸 밀기
-				System.out.println("rotate R");
-				char B_rotate [] = rightRotate(array[2],1);
-				array[2][0] = B_rotate[0];
-				array[2][1] = B_rotate[1];
-				array[3][1] = B_rotate[2];
-				printCube(array);
-				break;
-			case "B\'":	//가장 아랫줄 왼쪽 한 칸 밀기
-				System.out.println("rotate R\'");
-				char BB_rotate [] = leftRotate(array[2],1);
-				array[2][0] = BB_rotate[0];
-				array[2][1] = BB_rotate[1];
-				array[3][1] = BB_rotate[2];
-				printCube(array);
-				break;
-			case "Q":
-				System.out.println("Bye~");
-				printCube(array);
-				break;
-			default:
-				System.out.println("입력이 올바르지 않습니다.");
-				System.out.println("U,U',R,R',L,L',B,B'으로 나열된 문자를 입력해주세요.(소문자 가능)");
-				break;
+		while(true) {
+			System.out.println("Cube(press Q + enter to quit) > ");
+			String input = scan.next().toUpperCase();	//모든 입력값을 대문자로 바꾼다.
+			String command[];
+			command = input.split("(?!')");	//UU'B 가 입력인 경우 U,U',B로 split 해줌
+			for(int i=0; i<command.length; i++) {
+				switch(command[i]) {
+				case "U":	//가장 윗줄 왼쪽 한 칸 밀기
+					System.out.println("U");
+					char U_rotate[] = leftRotate(array[0], 1);
+					array[0][0] = U_rotate[0];
+					array[0][1] = U_rotate[1];
+					array[0][2] = U_rotate[2];
+					printCube(array);
+					break;
+				case "U\'":	//가장 윗줄 오른쪽 한 칸 밀기
+					System.out.println("U\'");
+					char UU_rotate[] = rightRotate(array[0], 1);
+					array[0][0] = UU_rotate[0];
+					array[0][1] = UU_rotate[1];
+					array[0][2] = UU_rotate[2];
+					printCube(array);
+					break;
+				case "R":	//가장 오른쪽 줄 위로 한 칸 밀기 = 왼쪽 한 칸
+					System.out.println("R");
+					char R_rotate[] = leftRotate(getColumn(array,2),1);
+					array[0][2] = R_rotate[0];
+					array[1][2] = R_rotate[1];
+					array[2][2] = R_rotate[2];
+					printCube(array);
+					break;
+				case "R\'":	//가장 오른쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
+					System.out.println("R\'");
+					char RR_rotate [] = rightRotate(getColumn(array,2),1);
+					array[0][2] = RR_rotate[0];
+					array[1][2] = RR_rotate[1];
+					array[2][2] = RR_rotate[2];
+					printCube(array);
+					break;
+				case "L":	//가장 왼쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
+					System.out.println("L");
+					char L_rotate [] = rightRotate(getColumn(array,0),1);
+					array[0][0] = L_rotate[0];
+					array[1][0] = L_rotate[1];
+					array[2][0] = L_rotate[2];
+					printCube(array);
+					break;
+				case "L\'":	//가장 왼족 줄 위로 한 칸 밀기 = 왼쪽 한 칸 
+					System.out.println("L\'");
+					char LL_rotate [] = leftRotate(getColumn(array,0),1);
+					array[0][0] = LL_rotate[0];
+					array[1][0] = LL_rotate[1];
+					array[2][0] = LL_rotate[2];
+					printCube(array);
+					break;
+				case "B":	//가장 아랫줄 오른쪽 한 칸 밀기
+					System.out.println("B");
+					char B_rotate [] = rightRotate(array[2],1);
+					array[2][0] = B_rotate[0];
+					array[2][1] = B_rotate[1];
+					array[2][2] = B_rotate[2];
+					printCube(array);
+					break;
+				case "B\'":	//가장 아랫줄 왼쪽 한 칸 밀기
+					System.out.println("B\'");
+					char BB_rotate [] = leftRotate(array[2],1);
+					array[2][0] = BB_rotate[0];
+					array[2][1] = BB_rotate[1];
+					array[2][2] = BB_rotate[2];
+					printCube(array);
+					break;
+				case "Q":
+					System.out.println("Bye~");
+					System.exit(0);
+					break;
+				default:
+					System.out.println(input+" ----> 입력이 올바르지 않습니다.");
+					System.out.println("U,U',R,R',L,L',B,B'으로 나열된 문자를 입력해주세요.(소문자 가능)");
+				}
+				System.out.println("\n");
 			}
-		}
-		
+		}	
 	}
 
 }
