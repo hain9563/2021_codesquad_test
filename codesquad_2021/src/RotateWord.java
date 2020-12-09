@@ -8,10 +8,9 @@ public class RotateWord {
 		return Rotated_str;
 	}
 	
-	//오른쪽 회전
-	static String rightRotate(String str, int index) {
-		String Rotated_str = str.substring(str.length()-index) + str.substring(0, str.length()-index);
-		return Rotated_str;
+	//오른쪽 회전 1번 = 왼쪽 회전 세번!!!
+	static String rightRotate(String str, int index) {	
+		return leftRotate(str, str.length()- index);
 	}
 	
 	static boolean isNegative(int index){
