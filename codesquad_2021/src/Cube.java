@@ -2,7 +2,13 @@ import java.util.Scanner;
 import java.lang.*;
 
 public class Cube {
-
+	
+	public static char[][] init(){
+		char[][] cube = {{'R','R','W'},{'G','C','W'},{'G','B','B'}};
+		return cube;
+		
+	}
+	
 	//2차원 배열 출력 함수
 	static void printCube(char[][] arr) {
 		int i, j;
@@ -43,10 +49,9 @@ public class Cube {
 	
 	
 	public static void main(String[] args) {
-		char array[][] = {{'R','R','W'},{'G','C','W'},{'G','B','B'}};
+		char array[][] = init();
 		printCube(array);
-		
-		System.out.println(array[2]);
+
 		Scanner scan = new Scanner(System.in);
 		
 		while(true) {
