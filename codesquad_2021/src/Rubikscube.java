@@ -13,6 +13,7 @@ public class Rubikscube {
 		static final char YELLOW = 'Y';
 		static final char EMPTY  = '\u0000';
 		static String command[];
+		static int num = 0;					 // 조작 횟수를 카운트하기 위한 숫자
 		
 		/*
 				 		char[][] cube = { {EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
@@ -142,12 +143,11 @@ public class Rubikscube {
 				cube[2][5-i] = temp[i];
 		}
 		
-		//왼쪽면(R)을 돌릴 때 주변 면들의 변화를 적용하는 함수
+		//오른쪽면(R)을 돌릴 때 주변 면들의 변화를 적용하는 함수
 		public static void rotate_R() {
 			char temp[] = new char[12];
 			for(int i=0;i<9;i++)
 				temp[i] = cube[8-i][5];
-			System.out.println(Arrays.toString(temp));
 			for(int i=0;i<3;i++)
 				temp[9+i] = cube[3+i][9];
 			
@@ -158,7 +158,7 @@ public class Rubikscube {
 				cube[3+i][9] = temp[9+i];
 		}
 		
-		//오른쪽(L)을 돌릴 때 주변 면들의 변화를 적용하는 함수
+		//왼쪽(L)을 돌릴 때 주변 면들의 변화를 적용하는 함수
 		public static void rotate_L() {
 			char temp[] = new char[12];
 			for(int i=0;i<9;i++)
@@ -173,6 +173,7 @@ public class Rubikscube {
 				cube[3+i][11] = temp[9+i];
 		}
 		
+		//윗면(U)을 돌릴 때 주변 면들의 변화를 적용하는 함수
 		public static void rotate_U() {
 			char temp[] = new char[12];
 			for(int i=0;i<12;i++) 
@@ -183,6 +184,7 @@ public class Rubikscube {
 				
 		}
 		
+		//아랫면(D)를 돌릴 때 주변 면들의 변화를 적용하는 함수
 		public static void rotate_D() {
 			char temp[] = new char[12];
 			for(int i=0;i<12;i++) 
@@ -192,6 +194,7 @@ public class Rubikscube {
 				cube[5][i] = temp[i];
 		}
 		
+		//뒷면(R)을 돌릴 때 주변 면들의 변화를 적용하는 함수
 		public static void rotate_B() {
 			char temp[] = new char[12];
 			for(int i=0;i<3;i++) {
@@ -200,18 +203,21 @@ public class Rubikscube {
 				temp[i+6] = cube[5-i][0];
 				temp[i+9] = cube[0][5-i];
 			}
+			
 			temp = leftRotate(temp,3);
 			for(int i=0;i<3;i++) {
 				cube[3+i][8] = temp[i];
 				cube[8][5-i] = temp[i+3];
-				cube[5-i][0] = temp[i+6];
-				cube[0][5-i] = temp[i+9];
+				cube[3+i][0] = temp[i+6];
+				cube[0][3+i] = temp[i+9];
 			}
 			
 		}
 
-		public static void main(String[] args) {
-			// TODO Auto-generated method stub
+		public static void main(String[] args) {		
+			long startTime = System.currentTimeMillis();
+			long endTime = 0;
+			int flag = 0;
 			cube = init();
 			printCube(cube);
 			Scanner scan = new Scanner(System.in);
@@ -223,8 +229,8 @@ public class Rubikscube {
 				command = input.split("(?!')");	//UU'B 가 입력인 경우 U,U',B로 split 해줌
 				numberToString();
 				System.out.println("\n");
-				System.out.println(Arrays.toString(command));
-	
+				num = command.length + num;		//조작 횟수 카운트
+				
 				for(int i=0; i<command.length; i++) {
 	
 					switch(command[i]) {
@@ -242,62 +248,81 @@ public class Rubikscube {
 						break;
 					case "D":
 						System.out.println("D");
+						selfRotate(6,9,3,6);
+						rotate_D();
+						printCube(cube);
 						break;
 					case "D\'":
 						System.out.println("D\'");
+						selfRotate(6,9,3,6); selfRotate(6,9,3,6); selfRotate(6,9,3,6);
+						rotate_D(); rotate_D(); rotate_D();
+						printCube(cube);
 						break;
-					case "U":	//가장 윗줄 왼쪽 한 칸 밀기
+					case "U":
 						System.out.println("U");
-						selfRotate(3,6,9,12);
+						selfRotate(0,3,3,6);
+						rotate_U();
 						printCube(cube);
 						break;
-					case "U\'":	//가장 윗줄 오른쪽 한 칸 밀기
+					case "U\'":	
 						System.out.println("U\'");
-
+						selfRotate(0,3,3,6); selfRotate(0,3,3,6); selfRotate(0,3,3,6);
+						rotate_U(); rotate_U(); rotate_U();
 						printCube(cube);
 						break;
-					case "R":	//가장 오른쪽 줄 위로 한 칸 밀기 = 왼쪽 한 칸
+					case "R":
 						System.out.println("R");
-
+						selfRotate(3,6,6,9);
+						rotate_R();
 						printCube(cube);
 						break;
-					case "R\'":	//가장 오른쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
+					case "R\'":
 						System.out.println("R\'");
-
+						selfRotate(3,6,6,9); selfRotate(3,6,6,9); selfRotate(3,6,6,9);
+						rotate_R(); rotate_R(); rotate_R();
 						printCube(cube);
 						break;
-					case "L":	//가장 왼쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
+					case "L":
 						System.out.println("L");
-
+						selfRotate(3,6,0,3);
+						rotate_L();
 						printCube(cube);
 						break;
-					case "L\'":	//가장 왼족 줄 위로 한 칸 밀기 = 왼쪽 한 칸 
+					case "L\'":
 						System.out.println("L\'");
-
+						selfRotate(3,6,0,3); selfRotate(3,6,0,3); selfRotate(3,6,0,3); 
+						rotate_L(); rotate_L(); rotate_L();
 						printCube(cube);
 						break;
-					case "B":	//가장 아랫줄 오른쪽 한 칸 밀기
+					case "B":
 						System.out.println("B");
-
+						selfRotate(3,6,9,12);
+						rotate_B();
 						printCube(cube);
 						break;
-					case "B\'":	//가장 아랫줄 왼쪽 한 칸 밀기
+					case "B\'":
 						System.out.println("B\'");
-
+						selfRotate(3,6,9,12); selfRotate(3,6,9,12); selfRotate(3,6,9,12);
+						rotate_B(); rotate_B(); rotate_B();
 						printCube(cube);
 						break;
 					case "Q":
 						System.out.println("Bye~");
-						System.exit(0);
+						System.out.println("조작 횟수 : "+ (num-1));
+						flag = -1;
 						break;
 					default:
 						System.out.println(input+" ----> 입력이 올바르지 않습니다.");
 						System.out.println("U,U',R,R',L,L',B,B',D,D',F,F'으로 나열된 문자를 입력해주세요.(소문자 가능)");
 					}
+					
 					System.out.println("\n");
 				}
+				if(flag == -1) {
+					break;
+				}
+				endTime = System.currentTimeMillis();
 			}
-			
-			
+			System.out.println("경과시간 : " + (endTime - startTime)/1000.0f +"초");
 		}
 }
