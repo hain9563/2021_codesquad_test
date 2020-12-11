@@ -28,15 +28,15 @@ public class Rubikscube {
 		
 		
 	 	public static char[][] init(){ 
-		 		char[][] cube = { {EMPTY, EMPTY, EMPTY, 'i', BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, 'h', BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, 'g', BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{WHITE, WHITE, WHITE, 'f', ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, 'l'}, 
-							{WHITE, WHITE, WHITE, 'e', ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, 'k'}, 
-							{WHITE, WHITE, WHITE, 'd', ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, 'j'}, 
-							{EMPTY, EMPTY, EMPTY, 'c', RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, 'b', RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, 'a', RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}};  
+		 		char[][] cube = { {EMPTY, EMPTY, EMPTY, 'l', 'k', 'j', EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{'i', WHITE, WHITE, '1', '2', '3', GREEN, GREEN, 'a', YELLOW, YELLOW, YELLOW}, 
+							{'h', WHITE, WHITE, '4', '5', '6', GREEN, GREEN, 'b', YELLOW, YELLOW, YELLOW}, 
+							{'g', WHITE, WHITE, '7', '8', '9', GREEN, GREEN, 'c', YELLOW, YELLOW, YELLOW}, 
+							{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, 'f', 'e', 'd', EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}}; 
 		 		// BLACK = U, ORANGE = F, RED = D
 		 		// WHITE = L, GREEN = R, YELLOW = B
 		 		
@@ -46,8 +46,6 @@ public class Rubikscube {
 		 		return cube; 
 		 	} 
 	 	
-	 
-		
 		//전개도 출력 함수
 		static void printCube(char[][] arr) {
 			int i, j;
@@ -74,8 +72,7 @@ public class Rubikscube {
 		        }
 		    }					
 		}
-		
-		
+			
 		// array에 요소를 추가하는 메소드
 		// input : String key ->  넣고 싶은 요소
 		//		   index	  ->  요소를 넣을 배열의 인덱스
@@ -88,8 +85,6 @@ public class Rubikscube {
 	        command = result;
 	    }
 	
-		
-		
 		/* 압축된 문자열을 풀어주는 함수 ex) U2R = UUR, U'3R3 = U'U'U'RRR
 		 * 사용자 입력이 저장되어 있는 String command[]의 각 요소에 접근하여 숫자가 있는 경우
 		 * 위의 예처럼 압축을 풀어서 추가되어야 할 요소를 array에 insert() 메소드로 추가한다.
@@ -177,17 +172,48 @@ public class Rubikscube {
 			for(int i=0;i<3;i++)
 				cube[3+i][11] = temp[9+i];
 		}
+		
+		public static void rotate_U() {
+			char temp[] = new char[12];
+			for(int i=0;i<12;i++) 
+				temp [i] = cube[3][i];
+			temp = leftRotate(temp, 3);
+			for(int i=0;i<12;i++)
+				cube[3][i] = temp[i];
+				
+		}
+		
+		public static void rotate_D() {
+			char temp[] = new char[12];
+			for(int i=0;i<12;i++) 
+				temp [i] = cube[5][i];
+			temp = rightRotate(temp, 3);
+			for(int i=0;i<12;i++)
+				cube[5][i] = temp[i];
+		}
+		
+		public static void rotate_B() {
+			char temp[] = new char[12];
+			for(int i=0;i<3;i++) {
+				temp[i] = cube[3+i][8];
+				temp[i+3] = cube[8][5-i];
+				temp[i+6] = cube[5-i][0];
+				temp[i+9] = cube[0][5-i];
+			}
+			temp = leftRotate(temp,3);
+			for(int i=0;i<3;i++) {
+				cube[3+i][8] = temp[i];
+				cube[8][5-i] = temp[i+3];
+				cube[5-i][0] = temp[i+6];
+				cube[0][5-i] = temp[i+9];
+			}
+			
+		}
 
 		public static void main(String[] args) {
 			// TODO Auto-generated method stub
 			cube = init();
 			printCube(cube);
-//			rotate_L();
-//			printCube(cube);
-//			selfRotate(3,6,9,12);
-//			System.out.println("\n");
-//			printCube(cube);
-
 			Scanner scan = new Scanner(System.in);
 			
 			while(true) {
@@ -198,16 +224,21 @@ public class Rubikscube {
 				numberToString();
 				System.out.println("\n");
 				System.out.println(Arrays.toString(command));
-
-				
+	
 				for(int i=0; i<command.length; i++) {
 	
 					switch(command[i]) {
 					case "F":
 						System.out.println("F");
+						selfRotate(3,6,3,6);
+						rotate_F();
+						printCube(cube);
 						break;
 					case "F\'":
 						System.out.println("F\'");
+						selfRotate(3,6,3,6); selfRotate(3,6,3,6); selfRotate(3,6,3,6);
+						rotate_F(); rotate_F(); rotate_F();
+						printCube(cube);
 						break;
 					case "D":
 						System.out.println("D");
@@ -261,7 +292,7 @@ public class Rubikscube {
 						break;
 					default:
 						System.out.println(input+" ----> 입력이 올바르지 않습니다.");
-						System.out.println("U,U',R,R',L,L',B,B'으로 나열된 문자를 입력해주세요.(소문자 가능)");
+						System.out.println("U,U',R,R',L,L',B,B',D,D',F,F'으로 나열된 문자를 입력해주세요.(소문자 가능)");
 					}
 					System.out.println("\n");
 				}
