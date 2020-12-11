@@ -14,108 +14,35 @@ public class Rubikscube {
 		static final char EMPTY  = '\u0000';
 		static String command[];
 		
-		public static void main(String[] args) {
-			// TODO Auto-generated method stub
-			cube = init();
-			printCube(cube);
-//			selfRotate(3,6,9,12);
-//			System.out.println("\n");
-//			printCube(cube);
-
-			Scanner scan = new Scanner(System.in);
-			
-			while(true) {
-				System.out.println("Cube(press Q + enter to quit) > ");
-				String input = scan.next().toUpperCase();	//모든 입력값을 대문자로 바꾼다.
-
-				command = input.split("(?!')");	//UU'B 가 입력인 경우 U,U',B로 split 해줌
-				numberToString();
-				System.out.println("\n");
-				System.out.println(Arrays.toString(command));
-
-				
-//				for(int i=0; i<command.length; i++) {
-//	
-//					switch(command[i]) {
-//					case "F":
-//						System.out.println("F");
-//						
-//					case "F\'":
-//						System.out.println("F\'");
-//						
-//					case "D":
-//						System.out.println("D");
-//						
-//					case "D\'":
-//						System.out.println("D\'");
-//						
-//					case "U":	//가장 윗줄 왼쪽 한 칸 밀기
-//						System.out.println("U");
-//						
-//						printCube(cube);
-//						break;
-//					case "U\'":	//가장 윗줄 오른쪽 한 칸 밀기
-//						System.out.println("U\'");
-//
-//						printCube(cube);
-//						break;
-//					case "R":	//가장 오른쪽 줄 위로 한 칸 밀기 = 왼쪽 한 칸
-//						System.out.println("R");
-//
-//						printCube(cube);
-//						break;
-//					case "R\'":	//가장 오른쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
-//						System.out.println("R\'");
-//
-//						printCube(cube);
-//						break;
-//					case "L":	//가장 왼쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
-//						System.out.println("L");
-//
-//						printCube(cube);
-//						break;
-//					case "L\'":	//가장 왼족 줄 위로 한 칸 밀기 = 왼쪽 한 칸 
-//						System.out.println("L\'");
-//
-//						printCube(cube);
-//						break;
-//					case "B":	//가장 아랫줄 오른쪽 한 칸 밀기
-//						System.out.println("B");
-//
-//						printCube(cube);
-//						break;
-//					case "B\'":	//가장 아랫줄 왼쪽 한 칸 밀기
-//						System.out.println("B\'");
-//
-//						printCube(cube);
-//						break;
-//					case "Q":
-//						System.out.println("Bye~");
-//						System.exit(0);
-//						break;
-//					default:
-//						System.out.println(input+" ----> 입력이 올바르지 않습니다.");
-//						System.out.println("U,U',R,R',L,L',B,B'으로 나열된 문자를 입력해주세요.(소문자 가능)");
-//					}
-//					System.out.println("\n");
-//				}
-			}
-			
-			
-		}
-		
-		
-		
-	 	public static char[][] init(){ 
-		 		char[][] cube = { {EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+		/*
+				 		char[][] cube = { {EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
 		 						{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
 		 						{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-	     						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, '1', '2', '3'}, 
-		 						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, '4', '5', '6'}, 
-		 						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, '7', '8', '9'}, 
+	     						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
+		 						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
+		 						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
 		 						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
 		 						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
 		 						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}}; 
+		 */
+		
+		
+	 	public static char[][] init(){ 
+		 		char[][] cube = { {EMPTY, EMPTY, EMPTY, 'i', BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, 'h', BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, 'g', BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{WHITE, WHITE, WHITE, 'f', ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, 'l'}, 
+							{WHITE, WHITE, WHITE, 'e', ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, 'k'}, 
+							{WHITE, WHITE, WHITE, 'd', ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, 'j'}, 
+							{EMPTY, EMPTY, EMPTY, 'c', RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, 'b', RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+							{EMPTY, EMPTY, EMPTY, 'a', RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}};  
+		 		// BLACK = U, ORANGE = F, RED = D
+		 		// WHITE = L, GREEN = R, YELLOW = B
+		 		
+		 		/*   U
+		 		 * L F R B
+		 		     D      */
 		 		return cube; 
 		 	} 
 	 	
@@ -188,5 +115,158 @@ public class Rubikscube {
 			}
 		}
 		
+		//cube[][] 에서 어떤 면을 돌릴 때 주변 면들의 요소를 가져와서 시계방향으로 rotate 해주는 함수
+		static char[] rightRotate(char[] arr, int index) {
+			StringBuilder str =new StringBuilder("");
+			str.append(arr);
+			String Rotated_str = str.substring(str.length()-index) + str.substring(0, str.length()-index);
+			char Rotated_arr [] = Rotated_str.toCharArray();
+			return Rotated_arr;
+		}
+		
+		//cube[][] 에서 어떤 면을 돌릴 때 주변 면들의 요소를 가져와서 반시계방향 rotate 해주는 함수
+		static char[] leftRotate(char[] arr, int index) {
+			char[] Rotated_arr = rightRotate(arr, index);
+			Rotated_arr = rightRotate(Rotated_arr, index);
+			Rotated_arr = rightRotate(Rotated_arr, index);
+			return Rotated_arr;
+		}
+		
+		//앞면(F)을 돌릴 때 주변 면들의 변화를 적용하는 함수
+		public static void rotate_F(){
+			char temp[] = new char[3];
+			for(int i=0;i<3;i++)
+				temp[i] = cube[i+3][2];
+			for(int i=0;i<3;i++)
+				cube[3+i][2] = cube[6][3+i];
+			for(int i=0;i<3;i++)
+				cube[6][5-i] = cube[3+i][6];
+			for(int i=0;i<3;i++)
+				cube[3+i][6] = cube[2][3+i];
+			for(int i=0;i<3;i++)
+				cube[2][5-i] = temp[i];
+		}
+		
+		//왼쪽면(R)을 돌릴 때 주변 면들의 변화를 적용하는 함수
+		public static void rotate_R() {
+			char temp[] = new char[12];
+			for(int i=0;i<9;i++)
+				temp[i] = cube[8-i][5];
+			System.out.println(Arrays.toString(temp));
+			for(int i=0;i<3;i++)
+				temp[9+i] = cube[3+i][9];
+			
+			temp = rightRotate(temp, 3);
+			for(int i=0;i<9;i++)
+				cube[8-i][5] = temp[i];
+			for(int i=0;i<3;i++)
+				cube[3+i][9] = temp[9+i];
+		}
+		
+		//오른쪽(L)을 돌릴 때 주변 면들의 변화를 적용하는 함수
+		public static void rotate_L() {
+			char temp[] = new char[12];
+			for(int i=0;i<9;i++)
+				temp[i] = cube[8-i][3];
+			for(int i=0;i<3;i++)
+				temp[9+i] = cube[3+i][11];
+			
+			temp = leftRotate(temp, 3);
+			for(int i=0;i<9;i++)
+				cube[8-i][3] = temp[i];
+			for(int i=0;i<3;i++)
+				cube[3+i][11] = temp[9+i];
+		}
 
+		public static void main(String[] args) {
+			// TODO Auto-generated method stub
+			cube = init();
+			printCube(cube);
+//			rotate_L();
+//			printCube(cube);
+//			selfRotate(3,6,9,12);
+//			System.out.println("\n");
+//			printCube(cube);
+
+			Scanner scan = new Scanner(System.in);
+			
+			while(true) {
+				System.out.println("Cube(press Q + enter to quit) > ");
+				String input = scan.next().toUpperCase();	//모든 입력값을 대문자로 바꾼다.
+
+				command = input.split("(?!')");	//UU'B 가 입력인 경우 U,U',B로 split 해줌
+				numberToString();
+				System.out.println("\n");
+				System.out.println(Arrays.toString(command));
+
+				
+				for(int i=0; i<command.length; i++) {
+	
+					switch(command[i]) {
+					case "F":
+						System.out.println("F");
+						break;
+					case "F\'":
+						System.out.println("F\'");
+						break;
+					case "D":
+						System.out.println("D");
+						break;
+					case "D\'":
+						System.out.println("D\'");
+						break;
+					case "U":	//가장 윗줄 왼쪽 한 칸 밀기
+						System.out.println("U");
+						selfRotate(3,6,9,12);
+						printCube(cube);
+						break;
+					case "U\'":	//가장 윗줄 오른쪽 한 칸 밀기
+						System.out.println("U\'");
+
+						printCube(cube);
+						break;
+					case "R":	//가장 오른쪽 줄 위로 한 칸 밀기 = 왼쪽 한 칸
+						System.out.println("R");
+
+						printCube(cube);
+						break;
+					case "R\'":	//가장 오른쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
+						System.out.println("R\'");
+
+						printCube(cube);
+						break;
+					case "L":	//가장 왼쪽 줄 아래로 한 칸 밀기 = 오른쪽 한 칸
+						System.out.println("L");
+
+						printCube(cube);
+						break;
+					case "L\'":	//가장 왼족 줄 위로 한 칸 밀기 = 왼쪽 한 칸 
+						System.out.println("L\'");
+
+						printCube(cube);
+						break;
+					case "B":	//가장 아랫줄 오른쪽 한 칸 밀기
+						System.out.println("B");
+
+						printCube(cube);
+						break;
+					case "B\'":	//가장 아랫줄 왼쪽 한 칸 밀기
+						System.out.println("B\'");
+
+						printCube(cube);
+						break;
+					case "Q":
+						System.out.println("Bye~");
+						System.exit(0);
+						break;
+					default:
+						System.out.println(input+" ----> 입력이 올바르지 않습니다.");
+						System.out.println("U,U',R,R',L,L',B,B'으로 나열된 문자를 입력해주세요.(소문자 가능)");
+					}
+					System.out.println("\n");
+				}
+			}
+			
+			
+		}
 }
