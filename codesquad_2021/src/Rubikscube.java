@@ -1,7 +1,6 @@
 // 면 하나가 회전 = 자기 자신도 돌아감(rotate_self) + 주변의 면도 같이 돌아감(각 면마다 다르게? 해야할 듯)
 import java.util.Scanner;
-
-import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class Rubikscube {
 		static char[][] cube;
@@ -213,13 +212,24 @@ public class Rubikscube {
 			}
 			
 		}
+		
+		// 경과시간을 구하여 출력해주는 함수
+		public static String printElapsedTime(long startTime, long endTime) {
+			long time = endTime - startTime;
+			String elapsedTime = String.format("%02d:%02d", 
+				    TimeUnit.NANOSECONDS.toMinutes(time) - 
+				    TimeUnit.HOURS.toMinutes(TimeUnit.NANOSECONDS.toHours(time)),
+				    TimeUnit.NANOSECONDS.toSeconds(time) - 
+				    TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(time)));
+			return elapsedTime;
+		}
 
 		public static void main(String[] args) {		
-			long startTime = System.currentTimeMillis();
+			long startTime = System.nanoTime();	// 경과시간 시작 시간 stamp
 			long endTime = 0;
 			int flag = 0;
-			cube = init();
-			printCube(cube);
+			cube = init();	// cube 생성
+			printCube(cube);// cube 처음 상태 출력
 			Scanner scan = new Scanner(System.in);
 			
 			while(true) {
@@ -227,7 +237,7 @@ public class Rubikscube {
 				String input = scan.next().toUpperCase();	//모든 입력값을 대문자로 바꾼다.
 
 				command = input.split("(?!')");	//UU'B 가 입력인 경우 U,U',B로 split 해줌
-				numberToString();
+				numberToString();				//R2와 같은 입력이 들어온 경우 RR로 바꾸어 command[]에 넣어줌
 				System.out.println("\n");
 				num = command.length + num;		//조작 횟수 카운트
 				
@@ -309,20 +319,22 @@ public class Rubikscube {
 					case "Q":
 						System.out.println("Bye~");
 						System.out.println("조작 횟수 : "+ (num-1));
-						flag = -1;
+						flag = -1;	//탈출 조건
 						break;
 					default:
 						System.out.println(input+" ----> 입력이 올바르지 않습니다.");
 						System.out.println("U,U',R,R',L,L',B,B',D,D',F,F'으로 나열된 문자를 입력해주세요.(소문자 가능)");
 					}
 					
-					System.out.println("\n");
+//					System.out.println("\n");
 				}
-				if(flag == -1) {
+				if(flag == -1) {	// while문 탈출 조건
 					break;
 				}
-				endTime = System.currentTimeMillis();
 			}
-			System.out.println("경과시간 : " + (endTime - startTime)/1000.0f +"초");
+			// 경과시간 구한 후 출력
+			endTime = System.nanoTime();
+			String elapsedTime = printElapsedTime(startTime, endTime);	
+			System.out.println("경과 시간 : "+elapsedTime);
 		}
 }
