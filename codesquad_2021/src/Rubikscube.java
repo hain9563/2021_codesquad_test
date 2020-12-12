@@ -1,5 +1,8 @@
 // 면 하나가 회전 = 자기 자신도 돌아감(rotate_self) + 주변의 면도 같이 돌아감(각 면마다 다르게? 해야할 듯)
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -16,29 +19,63 @@ public class Rubikscube {
 		static int num = 0;					 // 조작 횟수를 카운트하기 위한 숫자
 		static int flag = 0;
 		
-		/*
-				 		char[][] cube = { {EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-		 						{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-		 						{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-	     						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
-		 						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
-		 						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
-		 						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-		 						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-		 						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}}; 
-		 */
+		public static void main(String[] args) {		
+			long startTime = System.nanoTime();	// 경과시간 시작 시간 stamp
+			long endTime = 0;
+			int flag = 0;	// while문 탈출 조건을 위한 변수
+			String randomArray[] = null;
+			
+			cube = init();	// cube 생성
+			
+			PrintStream originalStream = System.out;
+			PrintStream dummyStream = new PrintStream(new OutputStream(){	// 더미 stream을 만들어서 랜덤한 cube를 만들 때
+				public void write(int b) {}									// rotateByCommand()의 print문이 실행되지
+				});															// 않도록 함
+			System.setOut(dummyStream);
+			
+			randomArray = generateRandomString();
+			for(int i=0; i<randomArray.length; i++)
+				rotateByCommand(randomArray[i]);
+			
+			System.setOut(originalStream);	// 다시 원래 stream으로 돌아옴
+			printCube(cube);// cube 처음 상태 출력
+			Scanner scan = new Scanner(System.in);
+			
+			while(true) {
+				System.out.println("Cube(press Q + enter to quit) > ");
+				String input = scan.next().toUpperCase();	//모든 입력값을 대문자로 바꾼다.
+
+				command = input.split("(?!')");	//예를 들어 UU'B 가 입력인 경우 U,U',B로 split 해줌
+				numberToString();				//예를 들어 R2와 같은 입력이 들어온 경우 RR로 바꾸어 command[]에 넣어줌
+				System.out.println("\n");
+				num = command.length + num;		//조작 횟수 카운트
+				
+				for(int i=0; i<command.length; i++) {
+					if (command[i].equals("Q"))	//사용자 입력이 q인 경우 flag를 -1로 set
+						flag = -1;
+					rotateByCommand(command[i]);
+				}
+				if(flag == -1)	// while문 탈출 조건
+					break;
+			}
+			// 경과시간 구한 후 출력
+			endTime = System.nanoTime();
+			String elapsedTime = printElapsedTime(startTime, endTime);	
+			System.out.println("경과 시간 : "+elapsedTime);
+			System.out.println("이용해주셔서 감사합니다.뚜뚜뚜.");
+		}
 		
 		
 	 	public static char[][] init(){ 
-		 		char[][] cube = { {EMPTY, EMPTY, EMPTY, 'l', 'k', 'j', EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{'i', WHITE, WHITE, '1', '2', '3', GREEN, GREEN, 'a', YELLOW, YELLOW, YELLOW}, 
-							{'h', WHITE, WHITE, '4', '5', '6', GREEN, GREEN, 'b', YELLOW, YELLOW, YELLOW}, 
-							{'g', WHITE, WHITE, '7', '8', '9', GREEN, GREEN, 'c', YELLOW, YELLOW, YELLOW}, 
-							{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
-							{EMPTY, EMPTY, EMPTY, 'f', 'e', 'd', EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}}; 
+	 		char[][] cube = { {EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+						{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+						{EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
+						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
+						{WHITE, WHITE, WHITE, ORANGE, ORANGE, ORANGE, GREEN, GREEN, GREEN, YELLOW, YELLOW, YELLOW}, 
+						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
+						{EMPTY, EMPTY, EMPTY, RED, RED, RED, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}}; 
 		 		// BLACK = U, ORANGE = F, RED = D
 		 		// WHITE = L, GREEN = R, YELLOW = B
 		 		
@@ -226,6 +263,7 @@ public class Rubikscube {
 			return elapsedTime;
 		}
 		
+		//큐브를 명령에 따라 돌리는 메소드
 		public static void rotateByCommand(String command) {
 			switch(command) {
 				case "F":
@@ -309,36 +347,15 @@ public class Rubikscube {
 					System.out.println("U,U',R,R',L,L',B,B',D,D',F,F'으로 나열된 문자를 입력해주세요.(소문자 가능)");
 			}
 		}
-
-		public static void main(String[] args) {		
-			long startTime = System.nanoTime();	// 경과시간 시작 시간 stamp
-			long endTime = 0;
-			int flag = 0;
-			cube = init();	// cube 생성
-			printCube(cube);// cube 처음 상태 출력
-			Scanner scan = new Scanner(System.in);
-			
-			while(true) {
-				System.out.println("Cube(press Q + enter to quit) > ");
-				String input = scan.next().toUpperCase();	//모든 입력값을 대문자로 바꾼다.
-
-				command = input.split("(?!')");	//UU'B 가 입력인 경우 U,U',B로 split 해줌
-				numberToString();				//R2와 같은 입력이 들어온 경우 RR로 바꾸어 command[]에 넣어줌
-				System.out.println("\n");
-				num = command.length + num;		//조작 횟수 카운트
-				
-				for(int i=0; i<command.length; i++) {
-					if (command[i].equals("Q"))	//사용자 입력이 q인 경우 flag를 -1로 set
-						flag = -1;
-					rotateByCommand(command[i]);
-				}
-				if(flag == -1)	// while문 탈출 조건
-					break;
+		
+		// 랜덤한 큐브를 만들기 위해 필요한 random command 생성 메소드
+		public static String[] generateRandomString() {
+			String cmd[] = {"U","U\'","R","R\'","L","L\'","B","B\'","D","D\'","F","F\'"};
+			String random[] = new String[20];
+			for(int i=0;i<20;i++) {
+				num = new Random().nextInt(cmd.length);
+				random[i] = cmd[num];
 			}
-			// 경과시간 구한 후 출력
-			endTime = System.nanoTime();
-			String elapsedTime = printElapsedTime(startTime, endTime);	
-			System.out.println("경과 시간 : "+elapsedTime);
-			System.out.println("이용해주셔서 감사합니다.뚜뚜뚜.");
+			return random;
 		}
 }
