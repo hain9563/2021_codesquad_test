@@ -1,4 +1,5 @@
 // 면 하나가 회전 = 자기 자신도 돌아감(rotate_self) + 주변의 면도 같이 돌아감(각 면마다 다르게? 해야할 듯)
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -13,6 +14,7 @@ public class Rubikscube {
 		static final char EMPTY  = '\u0000';
 		static String command[];
 		static int num = 0;					 // 조작 횟수를 카운트하기 위한 숫자
+		static int flag = 0;
 		
 		/*
 				 		char[][] cube = { {EMPTY, EMPTY, EMPTY, BLACK, BLACK, BLACK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY}, 
@@ -223,6 +225,90 @@ public class Rubikscube {
 				    TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(time)));
 			return elapsedTime;
 		}
+		
+		public static void rotateByCommand(String command) {
+			switch(command) {
+				case "F":
+					System.out.println("F");
+					selfRotate(3,6,3,6);
+					rotate_F();
+					printCube(cube);
+					break;
+				case "F\'":
+					System.out.println("F\'");
+					selfRotate(3,6,3,6); selfRotate(3,6,3,6); selfRotate(3,6,3,6);
+					rotate_F(); rotate_F(); rotate_F();
+					printCube(cube);
+					break;
+				case "D":
+					System.out.println("D");
+					selfRotate(6,9,3,6);
+					rotate_D();
+					printCube(cube);
+					break;
+				case "D\'":
+					System.out.println("D\'");
+					selfRotate(6,9,3,6); selfRotate(6,9,3,6); selfRotate(6,9,3,6);
+					rotate_D(); rotate_D(); rotate_D();
+					printCube(cube);
+					break;
+				case "U":
+					System.out.println("U");
+					selfRotate(0,3,3,6);
+					rotate_U();
+					printCube(cube);
+					break;
+				case "U\'":	
+					System.out.println("U\'");
+					selfRotate(0,3,3,6); selfRotate(0,3,3,6); selfRotate(0,3,3,6);
+					rotate_U(); rotate_U(); rotate_U();
+					printCube(cube);
+					break;
+				case "R":
+					System.out.println("R");
+					selfRotate(3,6,6,9);
+					rotate_R();
+					printCube(cube);
+					break;
+				case "R\'":
+					System.out.println("R\'");
+					selfRotate(3,6,6,9); selfRotate(3,6,6,9); selfRotate(3,6,6,9);
+					rotate_R(); rotate_R(); rotate_R();
+					printCube(cube);
+					break;
+				case "L":
+					System.out.println("L");
+					selfRotate(3,6,0,3);
+					rotate_L();
+					printCube(cube);
+					break;
+				case "L\'":
+					System.out.println("L\'");
+					selfRotate(3,6,0,3); selfRotate(3,6,0,3); selfRotate(3,6,0,3); 
+					rotate_L(); rotate_L(); rotate_L();
+					printCube(cube);
+					break;
+				case "B":
+					System.out.println("B");
+					selfRotate(3,6,9,12);
+					rotate_B();
+					printCube(cube);
+					break;
+				case "B\'":
+					System.out.println("B\'");
+					selfRotate(3,6,9,12); selfRotate(3,6,9,12); selfRotate(3,6,9,12);
+					rotate_B(); rotate_B(); rotate_B();
+					printCube(cube);
+					break;
+				case "Q":
+					System.out.println("Bye~");
+					System.out.println("조작 횟수 : "+ (num-1));
+					break;
+				default:	// 올바르지 않은 입력 처리
+					System.out.println("입력이 올바르지 않습니다.");
+					System.out.println("U,U',R,R',L,L',B,B',D,D',F,F'으로 나열된 문자를 입력해주세요.(소문자 가능)");
+			}
+		}
 
 		public static void main(String[] args) {		
 			long startTime = System.nanoTime();	// 경과시간 시작 시간 stamp
@@ -242,99 +328,17 @@ public class Rubikscube {
 				num = command.length + num;		//조작 횟수 카운트
 				
 				for(int i=0; i<command.length; i++) {
-	
-					switch(command[i]) {
-					case "F":
-						System.out.println("F");
-						selfRotate(3,6,3,6);
-						rotate_F();
-						printCube(cube);
-						break;
-					case "F\'":
-						System.out.println("F\'");
-						selfRotate(3,6,3,6); selfRotate(3,6,3,6); selfRotate(3,6,3,6);
-						rotate_F(); rotate_F(); rotate_F();
-						printCube(cube);
-						break;
-					case "D":
-						System.out.println("D");
-						selfRotate(6,9,3,6);
-						rotate_D();
-						printCube(cube);
-						break;
-					case "D\'":
-						System.out.println("D\'");
-						selfRotate(6,9,3,6); selfRotate(6,9,3,6); selfRotate(6,9,3,6);
-						rotate_D(); rotate_D(); rotate_D();
-						printCube(cube);
-						break;
-					case "U":
-						System.out.println("U");
-						selfRotate(0,3,3,6);
-						rotate_U();
-						printCube(cube);
-						break;
-					case "U\'":	
-						System.out.println("U\'");
-						selfRotate(0,3,3,6); selfRotate(0,3,3,6); selfRotate(0,3,3,6);
-						rotate_U(); rotate_U(); rotate_U();
-						printCube(cube);
-						break;
-					case "R":
-						System.out.println("R");
-						selfRotate(3,6,6,9);
-						rotate_R();
-						printCube(cube);
-						break;
-					case "R\'":
-						System.out.println("R\'");
-						selfRotate(3,6,6,9); selfRotate(3,6,6,9); selfRotate(3,6,6,9);
-						rotate_R(); rotate_R(); rotate_R();
-						printCube(cube);
-						break;
-					case "L":
-						System.out.println("L");
-						selfRotate(3,6,0,3);
-						rotate_L();
-						printCube(cube);
-						break;
-					case "L\'":
-						System.out.println("L\'");
-						selfRotate(3,6,0,3); selfRotate(3,6,0,3); selfRotate(3,6,0,3); 
-						rotate_L(); rotate_L(); rotate_L();
-						printCube(cube);
-						break;
-					case "B":
-						System.out.println("B");
-						selfRotate(3,6,9,12);
-						rotate_B();
-						printCube(cube);
-						break;
-					case "B\'":
-						System.out.println("B\'");
-						selfRotate(3,6,9,12); selfRotate(3,6,9,12); selfRotate(3,6,9,12);
-						rotate_B(); rotate_B(); rotate_B();
-						printCube(cube);
-						break;
-					case "Q":
-						System.out.println("Bye~");
-						System.out.println("조작 횟수 : "+ (num-1));
-						flag = -1;	//탈출 조건
-						break;
-					default:
-						System.out.println(input+" ----> 입력이 올바르지 않습니다.");
-						System.out.println("U,U',R,R',L,L',B,B',D,D',F,F'으로 나열된 문자를 입력해주세요.(소문자 가능)");
-					}
-					
-//					System.out.println("\n");
+					if (command[i].equals("Q"))	//사용자 입력이 q인 경우 flag를 -1로 set
+						flag = -1;
+					rotateByCommand(command[i]);
 				}
-				if(flag == -1) {	// while문 탈출 조건
+				if(flag == -1)	// while문 탈출 조건
 					break;
-				}
 			}
 			// 경과시간 구한 후 출력
 			endTime = System.nanoTime();
 			String elapsedTime = printElapsedTime(startTime, endTime);	
 			System.out.println("경과 시간 : "+elapsedTime);
+			System.out.println("이용해주셔서 감사합니다.뚜뚜뚜.");
 		}
 }
